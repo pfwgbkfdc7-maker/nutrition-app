@@ -24939,26 +24939,23 @@
       ] }),
       page === "fasting_choice" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { maxWidth: 480, margin: "0 auto", padding: "28px 20px 60px" }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setPage("intake"), style: { background: "none", border: "none", color: "#2F5233", fontFamily: FONT_BODY, fontSize: 13, fontWeight: 600, cursor: "pointer", padding: 0, marginBottom: 16 }, children: "\u2190 Edit profile" }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontFamily: FONT_DISPLAY, fontSize: 22, fontWeight: 700, color: "#1E2A22", marginBottom: 10 }, children: "How Many People Are You Cooking For?" }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+          "select",
+          {
+            style: { ...inputStyle, maxWidth: 200 },
+            value: form.householdSize,
+            onChange: (e) => setHouseholdSize(e.target.value),
+            children: Array.from({ length: 8 }, (_, i) => i + 1).map((n) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("option", { value: n, children: [
+              n,
+              " ",
+              n === 1 ? "person" : "people"
+            ] }, n))
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 13, color: "#5A6B5D", marginTop: 8, marginBottom: 32, lineHeight: 1.5 }, children: "You can change this later for each individual meal." }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontFamily: FONT_DISPLAY, fontSize: 22, fontWeight: 700, color: "#1E2A22", marginBottom: 4 }, children: "Do You Want To Fast This Week?" }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 13, color: "#5A6B5D", marginBottom: 24, lineHeight: 1.5 }, children: "You'll get to choose again next week." }),
-        /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "#fff", borderRadius: 16, boxShadow: "0 4px 20px rgba(30,42,34,0.06)", padding: "22px 20px", marginBottom: 20 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontFamily: FONT_DISPLAY, fontSize: 16, fontWeight: 700, color: "#2F5233", marginBottom: 10 }, children: "Cooking for How Many?" }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelStyle, children: "Default recipe portions" }),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-            "select",
-            {
-              style: { ...inputStyle, maxWidth: 160 },
-              value: form.householdSize,
-              onChange: (e) => setHouseholdSize(e.target.value),
-              children: Array.from({ length: 8 }, (_, i) => i + 1).map((n) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("option", { value: n, children: [
-                n,
-                " ",
-                n === 1 ? "person" : "people"
-              ] }, n))
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 12, color: "#8A9A8C", marginTop: 8, lineHeight: 1.5 }, children: "This sets the default for every meal this week \u2014 you can still adjust portions for any individual meal afterwards." })
-        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 13, color: "#5A6B5D", marginBottom: 16, lineHeight: 1.5 }, children: "You'll get to choose again next week." }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 12 }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
             "button",
