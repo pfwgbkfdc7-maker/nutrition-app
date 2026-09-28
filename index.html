@@ -22434,13 +22434,14 @@
     const base = 10 * referenceWeightKg + 6.25 * heightCm - 5 * age;
     return sex === "male" ? base + 5 : base - 161;
   }
-  function calcMaxEggsPerMeal({ heightCm, weightKg, age }) {
+  function calcMaxEggsPerMeal({ heightCm, weightKg, age, goal }) {
     const referenceWeightKg = calcReferenceWeightKg(heightCm);
     const bodyWeightKg = Math.min(weightKg, referenceWeightKg);
     const proteinCeilingG = bodyWeightKg * 0.5;
     let maxEggs = Math.round(proteinCeilingG / 6.3);
     if (age >= 65) maxEggs -= 1;
-    return Math.max(2, Math.min(6, maxEggs));
+    const hardCap = goal === "general_health" ? 5 : 6;
+    return Math.max(2, Math.min(hardCap, maxEggs));
   }
   function macroPerUnit(ing, macroKey) {
     if (ing.unit === "piece") return ing[macroKey + "PerPiece"] || 0;
@@ -23725,7 +23726,7 @@
       const usedRecipeIds = /* @__PURE__ */ new Set();
       const ledger = {};
       const weightKg = parseFloat(f.weightKg);
-      const solverProfile = { heightCm, weightKg, age };
+      const solverProfile = { heightCm, weightKg, age, goal: f.goal };
       const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((d, i) => ({
         day: d,
         ...buildDay(protocol.dietTag, { kcal: targetKcal, protein: proteinG, fat: fatG, carb: carbG }, usedRecipeIds, ledger, i, solverProfile, f.householdSize)
@@ -23753,7 +23754,7 @@
       if (candidates.length === 0) return;
       const newRecipe = candidates[Math.floor(Math.random() * candidates.length)];
       const dayIndex = oldMeal.dayIndex ?? dayIdx;
-      const solverProfile = { heightCm: parseFloat(plan.profile.heightCm), weightKg: parseFloat(plan.profile.weightKg), age: plan.profile.age };
+      const solverProfile = { heightCm: parseFloat(plan.profile.heightCm), weightKg: parseFloat(plan.profile.weightKg), age: plan.profile.age, goal: plan.profile.goal };
       const newMeal = { ...solveMealChoice(newRecipe, oldMeal.mealTarget, {}, dayIndex, solverProfile), mealTarget: oldMeal.mealTarget, dayIndex, servings: oldMeal.servings };
       const newMeals = [...day.meals];
       newMeals[mealIdx] = newMeal;
