@@ -23463,7 +23463,7 @@
     ] });
   }
   function App() {
-    const [page, setPage] = (0, import_react.useState)("disclaimer");
+    const [page, setPage] = (0, import_react.useState)("login");
     const [dayViewIndex, setDayViewIndex] = (0, import_react.useState)(0);
     const [form, setForm] = (0, import_react.useState)({
       name: "",
@@ -24139,6 +24139,7 @@
         ] })
       ] }),
       page === "disclaimer" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { maxWidth: 480, margin: "0 auto", padding: "40px 20px 60px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", { onClick: () => setPage("login"), style: { background: "none", border: "none", color: "#2F5233", fontFamily: FONT_BODY, fontSize: 13, fontWeight: 600, cursor: "pointer", padding: 0, marginBottom: 16 }, children: "\u2190 Back to log in" }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontFamily: FONT_DISPLAY, fontSize: 22, fontWeight: 700, color: "#1E2A22", marginBottom: 4 }, children: "Before you start" }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { fontSize: 13, color: "#5A6B5D", marginBottom: 20 }, children: "Please read and agree to the following before using this app." }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { background: "#fff", borderRadius: 16, boxShadow: "0 4px 20px rgba(30,42,34,0.06)", padding: "22px 20px", fontSize: 13.5, color: "#3A453D", lineHeight: 1.6 }, children: [
@@ -24385,7 +24386,7 @@
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
           "button",
           {
-            onClick: () => setPage("login"),
+            onClick: () => setPage("intake"),
             style: {
               width: "100%",
               padding: "15px",
@@ -24411,7 +24412,7 @@
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
             "button",
             {
-              onClick: () => setPage("intake"),
+              onClick: () => setPage("disclaimer"),
               style: { width: "100%", padding: "13px", borderRadius: 8, border: "none", background: "#1E3323", color: "#FBFAF5", fontFamily: FONT_BODY, fontWeight: 700, fontSize: 14, cursor: "pointer" },
               children: "Create my profile \u2192"
             }
