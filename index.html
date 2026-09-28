@@ -23411,192 +23411,55 @@
       ] })
     ] });
   }
-  function WheelColumn({ options, value, onChange, width }) {
-    const itemHeight = 26;
-    const visibleCount = 3;
-    const containerHeight = itemHeight * visibleCount;
-    const padTop = (containerHeight - itemHeight) / 2;
-    const listRef = (0, import_react.useRef)(null);
-    const skipNextScroll = (0, import_react.useRef)(false);
-    const scrollTimer = (0, import_react.useRef)(null);
-    (0, import_react.useEffect)(() => {
-      const idx = Math.max(0, options.findIndex((o) => o.value === value));
-      if (listRef.current) {
-        skipNextScroll.current = true;
-        listRef.current.scrollTop = idx * itemHeight;
+  function DobDropdowns({ value, onChange }) {
+    const currentYear = (/* @__PURE__ */ new Date()).getFullYear();
+    const parse = (v) => {
+      if (v) {
+        const [y, m, d] = v.split("-").map(Number);
+        if (y && m && d) return { y: String(y), m: String(m), d: String(d) };
       }
-    }, []);
-    (0, import_react.useEffect)(() => {
-      const idx = options.findIndex((o) => o.value === value);
-      if (idx >= 0 && listRef.current) {
-        const target = idx * itemHeight;
-        if (Math.abs(listRef.current.scrollTop - target) > 2) {
-          skipNextScroll.current = true;
-          listRef.current.scrollTop = target;
-        }
-      }
-    }, [value]);
-    function settleToIndex(idx) {
-      const clamped = Math.max(0, Math.min(options.length - 1, idx));
-      if (listRef.current) {
-        skipNextScroll.current = true;
-        listRef.current.scrollTo({ top: clamped * itemHeight, behavior: "smooth" });
-      }
-      if (options[clamped] && options[clamped].value !== value) {
-        onChange(options[clamped].value);
+      return { y: "", m: "", d: "" };
+    };
+    const init = parse(value);
+    const [day, setDay] = (0, import_react.useState)(init.d);
+    const [month, setMonth] = (0, import_react.useState)(init.m);
+    const [year, setYear] = (0, import_react.useState)(init.y);
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const years = Array.from({ length: 85 }, (_, i) => currentYear - 16 - i);
+    const daysInMonth = month ? new Date(Number(year) || 2e3, Number(month), 0).getDate() : 31;
+    function commit(d, m, y) {
+      if (d && m && y) {
+        const maxDay = new Date(Number(y), Number(m), 0).getDate();
+        const safeDay = Math.min(Number(d), maxDay);
+        if (safeDay !== Number(d)) setDay(String(safeDay));
+        onChange(`${y}-${String(m).padStart(2, "0")}-${String(safeDay).padStart(2, "0")}`);
+      } else {
+        onChange("");
       }
     }
-    function handleScroll() {
-      if (skipNextScroll.current) {
-        skipNextScroll.current = false;
-      }
-      clearTimeout(scrollTimer.current);
-      scrollTimer.current = setTimeout(() => {
-        if (!listRef.current) return;
-        const idx = Math.round(listRef.current.scrollTop / itemHeight);
-        settleToIndex(idx);
-      }, 110);
-    }
-    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { position: "relative", width, height: containerHeight }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            top: padTop,
-            left: 0,
-            right: 0,
-            height: itemHeight,
-            borderTop: "1px solid #D8D3C4",
-            borderBottom: "1px solid #D8D3C4",
-            background: "rgba(47,82,51,0.06)",
-            borderRadius: 6,
-            pointerEvents: "none"
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-        "div",
-        {
-          ref: listRef,
-          className: "wheel-scroll",
-          onScroll: handleScroll,
-          style: {
-            height: containerHeight,
-            overflowY: "scroll",
-            scrollSnapType: "y mandatory",
-            WebkitOverflowScrolling: "touch",
-            padding: `${padTop}px 0`,
-            boxSizing: "border-box",
-            position: "relative"
-          },
-          children: options.map((o, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-            "div",
-            {
-              onClick: () => settleToIndex(i),
-              style: {
-                height: itemHeight,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                scrollSnapAlign: "center",
-                fontFamily: FONT_BODY,
-                fontSize: 13,
-                fontWeight: o.value === value ? 700 : 400,
-                color: o.value === value ? "#1E2A22" : "#B7B2A2",
-                cursor: "pointer",
-                userSelect: "none",
-                transition: "color 0.15s, font-weight 0.15s"
-              },
-              children: o.label
-            },
-            o.value
-          ))
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { position: "absolute", top: 0, left: 0, right: 0, height: padTop, background: "linear-gradient(#fff, rgba(255,255,255,0))", pointerEvents: "none" } }),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { position: "absolute", bottom: 0, left: 0, right: 0, height: padTop, background: "linear-gradient(rgba(255,255,255,0), #fff)", pointerEvents: "none" } })
-    ] });
-  }
-  function DobWheelPicker({ value, onChange }) {
-    const today = /* @__PURE__ */ new Date();
-    const currentYear = today.getFullYear();
-    const parsed = (0, import_react.useMemo)(() => {
-      if (value) {
-        const [y, m, d] = value.split("-").map(Number);
-        if (y && m && d) return { day: d, month: m, year: y };
-      }
-      return { day: 1, month: 1, year: currentYear - 30 };
-    }, [value]);
-    const [day, setDay] = (0, import_react.useState)(parsed.day);
-    const [month, setMonth] = (0, import_react.useState)(parsed.month);
-    const [year, setYear] = (0, import_react.useState)(parsed.year);
-    const daysInMonth = new Date(year, month, 0).getDate();
-    const dayOptions = (0, import_react.useMemo)(
-      () => Array.from({ length: daysInMonth }, (_, i) => ({ value: i + 1, label: String(i + 1) })),
-      [daysInMonth]
-    );
-    const monthOptions = [
-      { value: 1, label: "January" },
-      { value: 2, label: "February" },
-      { value: 3, label: "March" },
-      { value: 4, label: "April" },
-      { value: 5, label: "May" },
-      { value: 6, label: "June" },
-      { value: 7, label: "July" },
-      { value: 8, label: "August" },
-      { value: 9, label: "September" },
-      { value: 10, label: "October" },
-      { value: 11, label: "November" },
-      { value: 12, label: "December" }
-    ];
-    const yearOptions = (0, import_react.useMemo)(
-      () => Array.from({ length: 100 }, (_, i) => currentYear - i).map((y) => ({ value: y, label: String(y) })),
-      [currentYear]
-    );
-    function commit(nextDay, nextMonth, nextYear) {
-      const maxDay = new Date(nextYear, nextMonth, 0).getDate();
-      const safeDay = Math.min(nextDay, maxDay);
-      const iso = `${nextYear}-${String(nextMonth).padStart(2, "0")}-${String(safeDay).padStart(2, "0")}`;
-      onChange(iso);
-    }
-    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 8, border: "1px solid #D8D3C4", borderRadius: 8, background: "#fff", padding: "0 4px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-        WheelColumn,
-        {
-          options: dayOptions,
-          value: Math.min(day, daysInMonth),
-          width: "33%",
-          onChange: (v) => {
-            setDay(v);
-            commit(v, month, year);
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-        WheelColumn,
-        {
-          options: monthOptions,
-          value: month,
-          width: "40%",
-          onChange: (v) => {
-            setMonth(v);
-            commit(day, v, year);
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
-        WheelColumn,
-        {
-          options: yearOptions,
-          value: year,
-          width: "27%",
-          onChange: (v) => {
-            setYear(v);
-            commit(day, month, v);
-          }
-        }
-      )
+    const selStyle = { flex: 1, minWidth: 0, padding: "11px 8px", borderRadius: 8, border: "1px solid #D8D3C4", background: "#fff", fontFamily: FONT_BODY, fontSize: 15, color: "#1E2A22" };
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 8 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", { "aria-label": "Day", style: { ...selStyle, flex: 0.8 }, value: day, onChange: (e) => {
+        setDay(e.target.value);
+        commit(e.target.value, month, year);
+      }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "", children: "Day" }),
+        Array.from({ length: daysInMonth }, (_, i) => i + 1).map((n) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: String(n), children: n }, n))
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", { "aria-label": "Month", style: { ...selStyle, flex: 1.5 }, value: month, onChange: (e) => {
+        setMonth(e.target.value);
+        commit(day, e.target.value, year);
+      }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "", children: "Month" }),
+        months.map((name, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: String(i + 1), children: name }, name))
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", { "aria-label": "Year", style: { ...selStyle, flex: 1 }, value: year, onChange: (e) => {
+        setYear(e.target.value);
+        commit(day, month, e.target.value);
+      }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: "", children: "Year" }),
+        years.map((y) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", { value: String(y), children: y }, y))
+      ] })
     ] });
   }
   function App() {
@@ -23605,7 +23468,7 @@
     const [form, setForm] = (0, import_react.useState)({
       name: "",
       email: "",
-      dob: `${(/* @__PURE__ */ new Date()).getFullYear() - 30}-01-01`,
+      dob: "",
       sex: "female",
       heightCm: "",
       weightKg: "",
@@ -24680,7 +24543,7 @@
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: { marginTop: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(IconCalendar, {}) }),
             /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { flex: 1 }, children: [
               /* @__PURE__ */ (0, import_jsx_runtime.jsx)("label", { style: labelStyle, children: "Date of birth" }),
-              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DobWheelPicker, { value: form.dob, onChange: (iso) => setForm({ ...form, dob: iso }) })
+              /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DobDropdowns, { value: form.dob, onChange: (iso) => setForm((f) => ({ ...f, dob: iso })) })
             ] })
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { style: { display: "flex", gap: 12, alignItems: "flex-start" }, children: [
