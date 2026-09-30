@@ -23302,7 +23302,6 @@
     const [loginPassword, setLoginPassword] = (0, import_react.useState)("");
     const [viewingIngredient, setViewingIngredient] = (0, import_react.useState)(null);
     const [smoothieSwap, setSmoothieSwap] = (0, import_react.useState)(null);
-    const [swapPicker, setSwapPicker] = (0, import_react.useState)(null);
     const [showFastingInfo, setShowFastingInfo] = (0, import_react.useState)(false);
     const [showGoalInfo, setShowGoalInfo] = (0, import_react.useState)(false);
     const [weightUnit, setWeightUnit] = (0, import_react.useState)("kg");
@@ -23574,15 +23573,12 @@
       setDayViewIndex((jsDay + 6) % 7);
       setPage("day_view");
     }
-    function candidatesForMeal(mealType, currentId) {
-      const dietTag = PROTOCOLS[plan.profile.goal]?.dietTag;
-      let pool = RECIPES.filter((r) => r.meal === mealType && r.id !== currentId && r.tags.includes(dietTag));
-      if (pool.length === 0) pool = RECIPES.filter((r) => r.meal === mealType && r.id !== currentId);
-      return pool;
-    }
-    function performSwapTo(dayIdx, mealIdx, newRecipe) {
+    function performSwap(dayIdx, mealIdx, mealType, currentId) {
       const day = plan.days[dayIdx];
       const oldMeal = day.meals[mealIdx];
+      const candidates = RECIPES.filter((r) => r.meal === mealType && r.id !== currentId);
+      if (candidates.length === 0) return;
+      const newRecipe = candidates[Math.floor(Math.random() * candidates.length)];
       const dayIndex = oldMeal.dayIndex ?? dayIdx;
       const solverProfile = { heightCm: parseFloat(plan.profile.heightCm), weightKg: parseFloat(plan.profile.weightKg), age: plan.profile.age, goal: plan.profile.goal };
       const newMeal = { ...solveMealChoice(newRecipe, oldMeal.mealTarget, {}, dayIndex, solverProfile), mealTarget: oldMeal.mealTarget, dayIndex, servings: oldMeal.servings };
@@ -23595,12 +23591,6 @@
       const newDays = [...plan.days];
       newDays[dayIdx] = { ...day, meals: newMeals, totals: newTotals };
       setPlan({ ...plan, days: newDays });
-    }
-    function performSwap(dayIdx, mealIdx, mealType, currentId) {
-      const candidates = candidatesForMeal(mealType, currentId);
-      if (candidates.length === 0) return;
-      const newRecipe = candidates[Math.floor(Math.random() * candidates.length)];
-      performSwapTo(dayIdx, mealIdx, newRecipe);
     }
     function performSmoothieSwap() {
       if (!smoothieSwap) return;
@@ -23650,7 +23640,7 @@
             {
               onClick: (e) => {
                 e.stopPropagation();
-                setSwapPicker({ dayIdx, mealIdx, mealType: m.meal, currentId: m.id, mode: "choose" });
+                performSwap(dayIdx, mealIdx, m.meal, m.id);
               },
               style: { background: "none", border: "1px solid #D8D3C4", borderRadius: 6, padding: "3px 10px", fontSize: 11, color: "#5A6B5D", cursor: "pointer" }
             },
@@ -24532,68 +24522,6 @@
           },
           "Add to Plan"
         )
-      )
-    ), swapPicker && swapPicker.mode === "choose" && /* @__PURE__ */ React.createElement(
-      "div",
-      {
-        onClick: () => setSwapPicker(null),
-        style: { position: "fixed", inset: 0, background: "rgba(30,42,34,0.45)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 1e3 }
-      },
-      /* @__PURE__ */ React.createElement(
-        "div",
-        {
-          onClick: (e) => e.stopPropagation(),
-          style: { background: "#FBFAF5", borderRadius: "16px 16px 0 0", padding: "22px 22px 30px", width: "100%", maxWidth: 480, boxShadow: "0 -4px 24px rgba(30,42,34,0.18)" }
-        },
-        /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: FONT_DISPLAY, fontSize: 17, fontWeight: 700, color: "#1E2A22" } }, "Swap this meal"), /* @__PURE__ */ React.createElement("button", { onClick: () => setSwapPicker(null), style: { background: "none", border: "none", color: "#8A9A8C", fontSize: 18, cursor: "pointer", padding: 0, lineHeight: 1 } }, "\u2715")),
-        /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: "#8A9A8C", marginBottom: 16 } }, "Let us pick something for you, or choose exactly what you'd like instead."),
-        /* @__PURE__ */ React.createElement(
-          "button",
-          {
-            onClick: () => {
-              performSwap(swapPicker.dayIdx, swapPicker.mealIdx, swapPicker.mealType, swapPicker.currentId);
-              setSwapPicker(null);
-            },
-            style: { width: "100%", padding: "13px", borderRadius: 8, border: "none", background: "#1E3323", color: "#FBFAF5", fontFamily: FONT_BODY, fontWeight: 700, fontSize: 14, cursor: "pointer", marginBottom: 10 }
-          },
-          "Random selection"
-        ),
-        /* @__PURE__ */ React.createElement(
-          "button",
-          {
-            onClick: () => setSwapPicker({ ...swapPicker, mode: "list" }),
-            style: { width: "100%", padding: "13px", borderRadius: 8, border: "1px solid #1E3323", background: "#fff", color: "#1E3323", fontFamily: FONT_BODY, fontWeight: 700, fontSize: 14, cursor: "pointer" }
-          },
-          "Select your meal"
-        )
-      )
-    ), swapPicker && swapPicker.mode === "list" && /* @__PURE__ */ React.createElement(
-      "div",
-      {
-        onClick: () => setSwapPicker(null),
-        style: { position: "fixed", inset: 0, background: "rgba(30,42,34,0.45)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 1e3 }
-      },
-      /* @__PURE__ */ React.createElement(
-        "div",
-        {
-          onClick: (e) => e.stopPropagation(),
-          style: { background: "#FBFAF5", borderRadius: "16px 16px 0 0", padding: "22px 22px 30px", width: "100%", maxWidth: 480, maxHeight: "80vh", overflowY: "auto", boxShadow: "0 -4px 24px rgba(30,42,34,0.18)" }
-        },
-        /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: FONT_DISPLAY, fontSize: 17, fontWeight: 700, color: "#1E2A22" } }, "Choose a meal"), /* @__PURE__ */ React.createElement("button", { onClick: () => setSwapPicker(null), style: { background: "none", border: "none", color: "#8A9A8C", fontSize: 18, cursor: "pointer", padding: 0, lineHeight: 1 } }, "\u2715")),
-        /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: "#8A9A8C", marginBottom: 16 } }, "Tap a meal to swap it in for this ", swapPicker.mealType, " slot."),
-        /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gap: 8 } }, candidatesForMeal(swapPicker.mealType, swapPicker.currentId).map((r) => /* @__PURE__ */ React.createElement(
-          "div",
-          {
-            key: r.id,
-            onClick: () => {
-              performSwapTo(swapPicker.dayIdx, swapPicker.mealIdx, r);
-              setSwapPicker(null);
-            },
-            style: { display: "flex", alignItems: "center", gap: 12, padding: "8px 10px", borderRadius: 10, border: "1px solid #F0EDE3", background: "#fff", cursor: "pointer" }
-          },
-          /* @__PURE__ */ React.createElement("img", { src: r.image, alt: r.name, style: { width: 48, height: 48, borderRadius: 8, objectFit: "cover", flexShrink: 0 } }),
-          /* @__PURE__ */ React.createElement("div", { style: { fontSize: 14, color: "#1E2A22" } }, r.name)
-        )))
       )
     ), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", padding: "18px 20px 28px", fontSize: 11, color: "#A8B3A9" } }, "\xA9 S. Lawrence 2026. All rights reserved."));
   }
