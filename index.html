@@ -22259,7 +22259,7 @@
         "Add the garlic and chorizo and fry on a medium heat for a couple of minutes.",
         "Add the courgette and aubergine and cook on medium for 5-7 minutes, stirring frequently.",
         "Add the chopped red and yellow peppers and fry for another 2 minutes.",
-        "Stir in the cumin seeds, a couple of teaspoons of smoked paprika and the jar of passata. Season with salt to taste.",
+        "Stir in the cumin seeds, a couple of teaspoons of smoked paprika and the tin of chopped tomatoes. Season with salt to taste.",
         "Mix well, cover with a lid and simmer over a medium heat for 10 minutes, stirring occasionally.",
         "If saving half of this dish for another meal later in the week, spoon out half of the mixture into a heatproof container now, before adding the eggs.",
         "When the veggies are cooked, crack the eggs on top and cook with the lid on for a further 5 minutes, or until the eggs are cooked to your liking.",
@@ -22268,12 +22268,12 @@
       ingredients: [
         { id: "eggs_39", name: "Eggs", role: "protein", unit: "piece", gramsPerPiece: 50, kcalPerPiece: 78, proteinPerPiece: 6.3, fatPerPiece: 5.3, carbPerPiece: 0.6, minPieces: 2, maxPieces: 3, pieceIncrement: 1 },
         { id: "chorizo_39", name: "Chorizo", role: "fat", unit: "g", kcalPer100g: 455, proteinPer100g: 24, fatPer100g: 38, carbPer100g: 2, minG: 40, maxG: 150 },
-        { id: "courgette_39", name: "Courgette", role: "carb", unit: "g", shareWeight: 0.22, kcalPer100g: 17, proteinPer100g: 1.2, fatPer100g: 0.3, carbPer100g: 3.1, minG: 100, maxG: 300 },
-        { id: "aubergine_39", name: "Aubergine", role: "carb", unit: "g", shareWeight: 0.2, kcalPer100g: 25, proteinPer100g: 1, fatPer100g: 0.2, carbPer100g: 6, minG: 80, maxG: 250 },
-        { id: "redpepper_39", name: "Red pepper", role: "carb", unit: "g", shareWeight: 0.16, kcalPer100g: 31, proteinPer100g: 1, fatPer100g: 0.3, carbPer100g: 6, minG: 40, maxG: 150 },
+        { id: "courgette_39", name: "Courgette", role: "fixed", unit: "g", fixedG: 100, kcalPer100g: 17, proteinPer100g: 1.2, fatPer100g: 0.3, carbPer100g: 3.1 },
+        { id: "aubergine_39", name: "Aubergine", role: "fixed", unit: "g", fixedG: 150, kcalPer100g: 25, proteinPer100g: 1, fatPer100g: 0.2, carbPer100g: 6 },
+        { id: "redpepper_39", name: "Red pepper", role: "fixed", unit: "g", fixedG: 60, kcalPer100g: 31, proteinPer100g: 1, fatPer100g: 0.3, carbPer100g: 6 },
         { id: "yellowpepper_39", name: "Yellow pepper", role: "carb", unit: "g", shareWeight: 0.12, kcalPer100g: 27, proteinPer100g: 1, fatPer100g: 0.2, carbPer100g: 6.3, minG: 20, maxG: 80 },
-        { id: "passata_39", name: "Passata", role: "carb", unit: "g", shareWeight: 0.3, kcalPer100g: 32, proteinPer100g: 1.6, fatPer100g: 0.2, carbPer100g: 6, minG: 150, maxG: 350 },
-        { id: "onion_39", name: "Onion", role: "fixed", unit: "g", fixedG: 75, kcalPer100g: 40, proteinPer100g: 1.1, fatPer100g: 0.1, carbPer100g: 9.3 },
+        { id: "tomatoes_39", name: "Tinned chopped tomatoes", role: "fixed", unit: "g", fixedG: 200, kcalPer100g: 32, proteinPer100g: 1.6, fatPer100g: 0.2, carbPer100g: 6 },
+        { id: "onion_39", name: "Onion", role: "fixed", unit: "g", fixedG: 80, kcalPer100g: 40, proteinPer100g: 1.1, fatPer100g: 0.1, carbPer100g: 9.3 },
         { id: "garlic_39", name: "Garlic", role: "fixed", unit: "g", fixedG: 8, kcalPer100g: 149, proteinPer100g: 6.4, fatPer100g: 0.5, carbPer100g: 33 },
         { id: "cumin_39", name: "Cumin seeds", role: "fixed", unit: "g", fixedG: 7, kcalPer100g: 375, proteinPer100g: 17.8, fatPer100g: 22.3, carbPer100g: 44.2 },
         { id: "paprika_39", name: "Smoked paprika", role: "fixed", unit: "g", fixedG: 3, kcalPer100g: 282, proteinPer100g: 14.1, fatPer100g: 12.9, carbPer100g: 34 },
@@ -22405,7 +22405,22 @@
   }
   function solveMealChoice(choice, mealTarget, ledger, dayIndex, profile) {
     if (choice.ingredients) {
-      const solved = solveIngredientRecipe(choice, mealTarget, profile);
+      let recipeToSolve = choice;
+      if (choice.id === 39) {
+        const isMuscleGain = profile?.goal === "muscle_gain";
+        const isMale = profile?.sex === "male";
+        const chorizoG = isMuscleGain ? 150 : 100;
+        const eggPieces = isMuscleGain ? isMale ? 4 : 3 : isMale ? 3 : 2;
+        recipeToSolve = {
+          ...choice,
+          ingredients: choice.ingredients.map((ing) => {
+            if (ing.id === "chorizo_39") return { ...ing, role: "fixed", fixedG: chorizoG };
+            if (ing.id === "eggs_39") return { ...ing, role: "fixed", fixedPieces: eggPieces };
+            return ing;
+          })
+        };
+      }
+      const solved = solveIngredientRecipe(recipeToSolve, mealTarget, profile);
       solved.lines.forEach((line) => {
         const ing = choice.ingredients.find((i) => i.id === line.id);
         if (!ing || !ing.pairKey) return;
@@ -22715,7 +22730,7 @@
     "Chorizo": "Meat",
     "Cumin seeds": "Spices",
     "Smoked paprika": "Spices",
-    "Passata": "Wet ingredients",
+    "Tinned chopped tomatoes": "Wet ingredients",
     "Grated cheese": "Other",
     "Greek yoghurt": "Other",
     "Greek yoghurt (chipotle mix)": "Other",
@@ -23559,7 +23574,7 @@
       const usedRecipeIds = /* @__PURE__ */ new Set();
       const ledger = {};
       const weightKg = parseFloat(f.weightKg);
-      const solverProfile = { heightCm, weightKg, age, goal: f.goal };
+      const solverProfile = { heightCm, weightKg, age, goal: f.goal, sex: f.sex };
       const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((d, i) => ({
         day: d,
         ...buildDay(protocol.dietTag, { kcal: targetKcal, protein: proteinG, fat: fatG, carb: carbG }, usedRecipeIds, ledger, i, solverProfile, f.householdSize)
@@ -23590,7 +23605,7 @@
       const day = plan.days[dayIdx];
       const oldMeal = day.meals[mealIdx];
       const dayIndex = oldMeal.dayIndex ?? dayIdx;
-      const solverProfile = { heightCm: parseFloat(plan.profile.heightCm), weightKg: parseFloat(plan.profile.weightKg), age: plan.profile.age, goal: plan.profile.goal };
+      const solverProfile = { heightCm: parseFloat(plan.profile.heightCm), weightKg: parseFloat(plan.profile.weightKg), age: plan.profile.age, goal: plan.profile.goal, sex: plan.profile.sex };
       const newMeal = { ...solveMealChoice(newRecipe, oldMeal.mealTarget, {}, dayIndex, solverProfile), mealTarget: oldMeal.mealTarget, dayIndex, servings: oldMeal.servings };
       const newMeals = [...day.meals];
       newMeals[mealIdx] = newMeal;
