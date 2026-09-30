@@ -22245,7 +22245,7 @@
     {
       id: 39,
       name: "Spanish Pisto with Chorizo & Baked Eggs",
-      meal: "breakfast",
+      meal: "dinner",
       tags: ["low_carb", "balanced"],
       image: RIMG_SPANISH_PISTO,
       instructions: [
@@ -24537,13 +24537,13 @@
       "div",
       {
         onClick: () => setSwapPicker(null),
-        style: { position: "fixed", inset: 0, background: "rgba(30,42,34,0.45)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 1e3 }
+        style: { position: "fixed", inset: 0, background: "rgba(30,42,34,0.45)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1e3, padding: 20 }
       },
       /* @__PURE__ */ import_react.default.createElement(
         "div",
         {
           onClick: (e) => e.stopPropagation(),
-          style: { background: "#FBFAF5", borderRadius: "16px 16px 0 0", padding: "22px 22px 30px", width: "100%", maxWidth: 480, boxShadow: "0 -4px 24px rgba(30,42,34,0.18)" }
+          style: { background: "#FBFAF5", borderRadius: 16, padding: "22px 22px 26px", width: "100%", maxWidth: 480, boxShadow: "0 8px 32px rgba(30,42,34,0.28)" }
         },
         /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 } }, /* @__PURE__ */ import_react.default.createElement("div", { style: { fontFamily: FONT_DISPLAY, fontSize: 17, fontWeight: 700, color: "#1E2A22" } }, "Swap this meal"), /* @__PURE__ */ import_react.default.createElement("button", { onClick: () => setSwapPicker(null), style: { background: "none", border: "none", color: "#8A9A8C", fontSize: 18, cursor: "pointer", padding: 0, lineHeight: 1 } }, "\u2715")),
         /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: 12, color: "#8A9A8C", marginBottom: 16 } }, "Let us pick something for you, or choose exactly what you'd like instead."),
@@ -24571,13 +24571,13 @@
       "div",
       {
         onClick: () => setSwapPicker(null),
-        style: { position: "fixed", inset: 0, background: "rgba(30,42,34,0.45)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 1e3 }
+        style: { position: "fixed", inset: 0, background: "rgba(30,42,34,0.45)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1e3, padding: 20 }
       },
       /* @__PURE__ */ import_react.default.createElement(
         "div",
         {
           onClick: (e) => e.stopPropagation(),
-          style: { background: "#FBFAF5", borderRadius: "16px 16px 0 0", padding: "22px 22px 30px", width: "100%", maxWidth: 480, maxHeight: "80vh", overflowY: "auto", boxShadow: "0 -4px 24px rgba(30,42,34,0.18)" }
+          style: { background: "#FBFAF5", borderRadius: 16, padding: "22px 22px 26px", width: "100%", maxWidth: 480, maxHeight: "80vh", overflowY: "auto", boxShadow: "0 8px 32px rgba(30,42,34,0.28)" }
         },
         /* @__PURE__ */ import_react.default.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 } }, /* @__PURE__ */ import_react.default.createElement("div", { style: { fontFamily: FONT_DISPLAY, fontSize: 17, fontWeight: 700, color: "#1E2A22" } }, "Choose a meal"), /* @__PURE__ */ import_react.default.createElement("button", { onClick: () => setSwapPicker(null), style: { background: "none", border: "none", color: "#8A9A8C", fontSize: 18, cursor: "pointer", padding: 0, lineHeight: 1 } }, "\u2715")),
         /* @__PURE__ */ import_react.default.createElement("div", { style: { fontSize: 12, color: "#8A9A8C", marginBottom: 16 } }, "Tap a meal to swap it in for this ", swapPicker.mealType, " slot."),
