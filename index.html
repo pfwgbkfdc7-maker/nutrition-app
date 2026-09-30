@@ -21525,7 +21525,7 @@
     return "x" + h;
   }
   var EMAIL_RE = /^\S+@\S+\.\S+$/;
-  var APP_VERSION = "1.6";
+  var APP_VERSION = "1.7";
   var CHANGELOG = [
     { version: "1.5", changes: [
       "Added a new Chicken, Chorizo & Feta Salad recipe for lunch and dinner.",
@@ -21537,6 +21537,12 @@
       "Fixed water and olive oil measurements in recipes to show correctly in ml.",
       "Added a Metric / Imperial unit toggle on recipes and the shopping list.",
       "Added a pinch of black pepper to the Anti-inflammatory Smoothie (helps the turmeric absorb better)."
+    ] },
+    { version: "1.7", changes: [
+      "Added a new Spanish Pisto with Chorizo & Baked Eggs recipe for dinner.",
+      "Swap a meal now offers a choice: let us pick something for you at random, or select exactly what you want from a list of photos.",
+      "Meal swaps now only suggest recipes that fit your current plan (e.g. Keto swaps stay Keto-friendly).",
+      "Updated the Keto plan's carb target and description for clarity \u2014 generally under 30g net carbs a day."
     ] }
   ];
   function unseenChangelog(seenVersion) {
@@ -22260,7 +22266,7 @@
         "Sprinkle with a little extra smoked paprika and serve."
       ],
       ingredients: [
-        { id: "eggs_39", name: "Eggs", role: "protein", unit: "piece", gramsPerPiece: 50, kcalPerPiece: 78, proteinPerPiece: 6.3, fatPerPiece: 5.3, carbPerPiece: 0.6, minPieces: 2, maxPieces: 6, pieceIncrement: 1 },
+        { id: "eggs_39", name: "Eggs", role: "protein", unit: "piece", gramsPerPiece: 50, kcalPerPiece: 78, proteinPerPiece: 6.3, fatPerPiece: 5.3, carbPerPiece: 0.6, minPieces: 2, maxPieces: 3, pieceIncrement: 1 },
         { id: "chorizo_39", name: "Chorizo", role: "fat", unit: "g", kcalPer100g: 455, proteinPer100g: 24, fatPer100g: 38, carbPer100g: 2, minG: 40, maxG: 150 },
         { id: "courgette_39", name: "Courgette", role: "carb", unit: "g", shareWeight: 0.22, kcalPer100g: 17, proteinPer100g: 1.2, fatPer100g: 0.3, carbPer100g: 3.1, minG: 100, maxG: 300 },
         { id: "aubergine_39", name: "Aubergine", role: "carb", unit: "g", shareWeight: 0.2, kcalPer100g: 25, proteinPer100g: 1, fatPer100g: 0.2, carbPer100g: 6, minG: 80, maxG: 250 },
