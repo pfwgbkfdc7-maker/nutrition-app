@@ -21795,12 +21795,18 @@
     return "x" + h;
   }
   var EMAIL_RE = /^\S+@\S+\.\S+$/;
-  var APP_VERSION = "1.5";
+  var APP_VERSION = "1.6";
   var CHANGELOG = [
     { version: "1.5", changes: [
       "Added a new Chicken, Chorizo & Feta Salad recipe for lunch and dinner.",
       "Capped avocado at half a piece per person, across every recipe.",
       "Expanded the Keto, Overall Health, and Improve Insulin Sensitivity goal descriptions."
+    ] },
+    { version: "1.6", changes: [
+      "Added a show/hide toggle for passwords when creating your account.",
+      "Fixed water and olive oil measurements in recipes to show correctly in ml.",
+      "Added a Metric / Imperial unit toggle on recipes and the shopping list.",
+      "Added a pinch of black pepper to the Anti-inflammatory Smoothie (helps the turmeric absorb better)."
     ] }
   ];
   function unseenChangelog(seenVersion) {
@@ -23216,7 +23222,7 @@
       name: "\u{1F33F} Body Balance Anti-inflammatory Smoothie",
       blurb: "Blackberries, citrus, collard/kale, ginger & turmeric.",
       image: RIMG_BODY_BALANCE_ANTI_INFLAMMATORY_SMOOTHIE,
-      ingredients: (unit) => ["\xBD cup blackberries or black raspberries (or 1 tbsp black raspberry powder)", "\xBD cup citrus or tropical fruit (orange, tangerine, papaya, mango, guava)", "1 large collard green leaf", "\xBD-inch fresh ginger root (or \xBC tsp ground ginger)", "1 large kale leaf", `\xBD cup pomegranate seeds (or ${fmtLiquid(2, null, unit)} pomegranate juice)`, "1-inch fresh turmeric root (or \xBD tsp ground turmeric)", "Water, to taste/texture"]
+      ingredients: (unit) => ["\xBD cup blackberries or black raspberries (or 1 tbsp black raspberry powder)", "\xBD cup citrus or tropical fruit (orange, tangerine, papaya, mango, guava)", "1 large collard green leaf", "\xBD-inch fresh ginger root (or \xBC tsp ground ginger)", "1 large kale leaf", `\xBD cup pomegranate seeds (or ${fmtLiquid(2, null, unit)} pomegranate juice)`, "1-inch fresh turmeric root (or \xBD tsp ground turmeric)", "Pinch of black pepper", "Water, to taste/texture"]
     }
   ];
   var SMOOTHIE_BUILDER_OPTIONS = [
