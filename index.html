@@ -21525,7 +21525,7 @@
     return "x" + h;
   }
   var EMAIL_RE = /^\S+@\S+\.\S+$/;
-  var APP_VERSION = "1.11";
+  var APP_VERSION = "1.12";
   var CHANGELOG = [
     { version: "1.5", changes: [
       "Added a new Chicken, Chorizo & Feta Salad recipe for lunch and dinner.",
@@ -21559,6 +21559,9 @@
     { version: "1.11", changes: [
       'Fixed the "left over" amount shown under ingredients like half an avocado \u2014 it now updates correctly when you change how many people a meal is for.',
       "Added a proper Recipes page: tap the Recipes icon for Breakfast, Lunch, Dinner, Sauces, Side Dishes and Extras buttons, each opening a photo list of recipes you can browse."
+    ] },
+    { version: "1.12", changes: [
+      'Added a dedicated "Dairy" section to the shopping list, so cheese, butter and yoghurt no longer sit under "Other."'
     ] }
   ];
   function unseenChangelog(seenVersion) {
@@ -22668,7 +22671,7 @@
     "Purple grape juice",
     "Tomato juice"
   ]);
-  var CATEGORY_ORDER = ["Fruit & Veg", "Meat", "Fish", "Eggs", "Spices", "Wet ingredients", "Other"];
+  var CATEGORY_ORDER = ["Fruit & Veg", "Meat", "Fish", "Eggs", "Dairy", "Spices", "Wet ingredients", "Other"];
   var INGREDIENT_CATEGORY = {
     // Fruit & Veg
     "Asparagus": "Fruit & Veg",
@@ -22804,7 +22807,6 @@
     "Silken tofu": "Other",
     "Soy powder": "Other",
     "Whey powder": "Other",
-    "Yogurt or kefir": "Other",
     "Ground flaxseed": "Other",
     // Oil/dressing variants from full recipes (same family as "Olive oil")
     "Olive oil (drizzle)": "Wet ingredients",
@@ -22818,13 +22820,13 @@
     "Almonds": "Other",
     "Macadamias": "Other",
     "Black coffee": "Other",
-    "Butter": "Other",
-    "Butter (mash)": "Other",
+    "Butter": "Dairy",
+    "Butter (mash)": "Dairy",
     "Cacao powder": "Other",
-    "Cheddar cheese": "Other",
+    "Cheddar cheese": "Dairy",
     "Chia seeds": "Other",
     "Chickpeas": "Other",
-    "Coconut yoghurt or full-fat Greek yoghurt": "Other",
+    "Coconut yoghurt or full-fat Greek yoghurt": "Dairy",
     "Collagen powder": "Other",
     "Aubergine": "Fruit & Veg",
     "Red or yellow pepper": "Fruit & Veg",
@@ -22832,21 +22834,23 @@
     "Cumin seeds": "Spices",
     "Smoked paprika": "Spices",
     "Tinned chopped tomatoes": "Wet ingredients",
-    "Grated cheese": "Other",
-    "Greek yoghurt": "Other",
-    "Greek yoghurt (chipotle mix)": "Other",
+    "Grated cheese": "Dairy",
+    "Greek yoghurt": "Dairy",
+    "Greek yoghurt (chipotle mix)": "Dairy",
     "Kidney beans": "Other",
     "Mixed seeds": "Other",
-    "Mozzarella cheese": "Other",
+    "Mozzarella cheese": "Dairy",
     "Nut butter": "Other",
     "Oats (dry)": "Other",
     "Olives": "Other",
     "Protein powder (unflavoured)": "Other",
     "Quinoa, cooked": "Other",
-    "Unsalted butter": "Other",
+    "Unsalted butter": "Dairy",
     "White rice, cooked": "Other",
-    "Feta cheese": "Other",
-    "Kalamata olives (pitted)": "Other"
+    "Feta cheese": "Dairy",
+    "Kalamata olives (pitted)": "Other",
+    // Smoothie Builder: dairy-specific option (the mixed "dairy, pea, oat, or soy" option stays in Other since it isn't always dairy)
+    "Yogurt or kefir": "Dairy"
   };
   function buildShoppingList(days, measureUnit = "metric") {
     const items = {};
